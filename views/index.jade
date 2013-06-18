@@ -3,5 +3,10 @@ extends layout
 block content
   .row
     .span12
-      h1 Stats for fyi.org.nz
+      h2 Stats for fyi.org.nz
+      .btn-group(data-toggle="buttons-radio")
+        button.btn(data-year=year) All time
+        - each year, i in years
+          - var cls = i === 0 ? "active btn" : "btn"
+          button.btn(class=cls, data-year=year)= year
       svg
