@@ -16,7 +16,7 @@ db = conn.database('fyi-graphs');
  */
 
 exports.data = function(req, res) {
-    var year = req.params.year,
+    var year = req.query.year,
         startkey = [],
         endkey = [{}];
 
@@ -30,30 +30,7 @@ exports.data = function(req, res) {
         startkey: startkey,
         endkey: endkey
     }, function(err, results) {
-        var stats = [
-            {
-                key: "Successful",
-                color: "#1f77b4",
-                values: []
-            },
-            {
-                key: "Unsuccessful",
-                color: "#d62728",
-                values: []
-            },
-            {
-                key: "Not Held",
-                color: "#888",
-                values: []
-            },
-            {
-                key: "Waiting",
-                color: "#7ab",
-                values: []
-            }
-        ];
-
-        stats = _.reduce(results, function(memo, result) {
+        var stats = _.reduce(results, function(memo, result) {
             var doc = result.doc,
                 events = doc.info_request_events,
                 title = result.key[1],
@@ -61,52 +38,56 @@ exports.data = function(req, res) {
                 series,
                 body;
 
+            body = memo[title] = memo[title] || {
+                title: title,
+                waiting: 0,
+                successful: 0,
+                unsuccessful: 0,
+                not_held: 0,
+                total: 0
+            };
+
             if (_.contains('waiting_response waiting_clarification internal_review'.split(' '), status)) {
-                series = memo[3];
+                body.waiting++;
+                body.total++;
             } else if (_.contains('rejected'.split(' '), status)) {
-                series = memo[1];
+                body.unsuccessful++;
+                body.total++;
             } else if (_.contains('partially_successful successful'.split(' '), status)) {
-                series = memo[0];
+                body.successful++;
+                body.total++;
             } else if (_.contains('not_held'.split(' '), status)) {
-                series = memo[2];
+                body.not_held++;
+                body.total++;
             } else if (_.contains('user_withdrawn'.split(' '), status)) {
                 // do nothing
             } else {
-                debugger;
+                // do nothing
             }
-
-            if (!series) {
-                return memo;
-            }
-            body = _.findWhere(series.values, {
-                label: title
-            });
-
-            if (!body) {
-                _.each(memo, function(series) {
-                    series.values.push({
-                        label: title,
-                        value: 0
-                    });
-                });
-                body = _.findWhere(series.values, {
-                    label: title
-                });
-            }
-
-            body.value++;
 
             return memo;
-        }, stats);
-
-        stats.lines = _.max(_.map(stats, function(series) {
-            return series.values.length;
-        }));
+        }, {});
 
         res.send(stats);
     });
 }
 
 exports.index = function(req, res) {
-    res.render('index', {});
+    db.view('crawler/list', {
+        descending: true,
+        startkey: [{}],
+        endkey: []
+    }, function(err, results) {
+        var years = _.reduce(results, function(memo, result) {
+            var year = result.key[0];
+
+            if (!~memo.indexOf(year)) {
+                memo.push(year);
+            }
+            return memo;
+        }, []);
+        res.render('index', {
+            years: years
+        });
+    });
 };
