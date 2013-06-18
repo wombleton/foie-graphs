@@ -2,6 +2,18 @@ doctype 5
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='http://underscorejs.org/underscore-min.js')
+    script(src='/js/d3.v3.js')
+    script(src='/js/nv.d3.js')
+    script(src='/js/graphs.js')
+    link(rel='stylesheet', href='/stylesheets/graphs.css')
   body
-    block content
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          a.brand(href="/") OIA Stats
+          ul.nav
+            li 
+              a 2013
+    .container
+      block content
