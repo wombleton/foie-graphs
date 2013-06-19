@@ -1,15 +1,5 @@
-var cradle = require('cradle'),
-    _ = require('underscore'),
-    conn,
-    db;
-
-conn = new (cradle.Connection)('http://localhost', 5984, {
-    auth: {
-        username: 'admin',
-        password: 'admin'
-    }
-});
-db = conn.database('fyi-graphs');
+var _ = require('underscore'),
+    db = require('../lib/db');
 
 /*
  * GET home page.
@@ -21,8 +11,8 @@ exports.data = function(req, res) {
         endkey = [{}];
 
     if (year) {
-        startkey.push(Number(year));
-        endkey.push(Number(year));
+        startkey.unshift(Number(year));
+        endkey.unshift(Number(year));
     }
 
     db.view('crawler/list', {

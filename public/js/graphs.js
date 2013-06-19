@@ -1,49 +1,95 @@
-var chart;
+function process(raw) {
+    var bodies;
 
-d3.json('data.json', function(data) {
-    var i,
-        lines = 0;
+    bodies = _.sortBy(raw, function(value) {
+        return value.total;
+    }).reverse();
 
-    for (i = 0; i < data.length; i++) {
-        if (data[i].values.length > lines) {
-            lines = data[i].values.length;
+    return _.reduce(bodies, function(memo, body) {
+        memo[0].values.push({
+            label: body.title,
+            value: body.successful
+        });
+        memo[1].values.push({
+            label: body.title,
+            value: body.unsuccessful
+        });
+        memo[2].values.push({
+            label: body.title,
+            value: body.not_held
+        });
+        memo[3].values.push({
+            label: body.title,
+            value: body.waiting
+        });
+
+        return memo;
+    }, [
+        {
+            key: "Successful",
+            color: "#1f77b4",
+            values: []
+        },
+        {
+            key: "Unsuccessful",
+            color: "#d62728",
+            values: []
+        },
+        {
+            key: "Not Held",
+            color: "#888",
+            values: []
+        },
+        {
+            key: "Waiting",
+            color: "#D9D2B6",
+            values: []
         }
+    ]);
+}
+
+function drawGraph() {
+    var url = 'data.json',
+        year = $('button.active').attr('data-year');
+
+    if (year !== 'all') {
+        url += '?year=' + year;
     }
 
-    document.getElementsByTagName('svg')[0].setAttribute('style', 'height: ' + (lines * 30));
+    d3.json(url, function(raw) {
+        var data = process(raw);
 
-    nv.addGraph(function() {
-        var chart = nv.models.multiBarHorizontalChart()
-            .stacked(true)
-            .x(function(d) { return d.label })
-            .y(function(d) { return d.value })
-            .margin({top: 30, right: 20, bottom: 50, left: 350})
-            .tooltips(true)
-            .showControls(false);
+        document.getElementsByTagName('svg')[0].setAttribute('style', 'height: ' + (data[0].values.length * 30));
 
-        chart.yAxis
-            .tickFormat(d3.format(',f'));
+        nv.graphs.shift();
+        nv.addGraph(function() {
+            var chart = nv.models.multiBarHorizontalChart()
+                .stacked(true)
+                .x(function(d) { return d.label })
+                .y(function(d) { return d.value })
+                .margin({top: 30, right: 20, bottom: 50, left: 350})
+                .tooltips(true)
+                .showControls(false);
 
-        d3.select('svg')
-            .datum(data)
-            .transition().duration(500)
-            .call(chart);
+            chart.yAxis
+                .tickFormat(d3.format(',f'));
 
-        setTimeout(function() {
-            var i;
-
-            for (i = 0; i < data.length; i++) {
-                data[i].values = _.shuffle(data[i].values);
-            }
+            d3.select('svg').empty();
 
             d3.select('svg')
                 .datum(data)
                 .transition().duration(500)
                 .call(chart);
-        }, 5000);
 
-        nv.utils.windowResize(chart.update);
+            nv.utils.windowResize(chart.update);
 
-        return chart;
-    });
+            return chart;
+        });
+    })
+}
+
+$(document).ready(drawGraph);
+
+$(document).on('click', 'button', function() {
+    _.delay(drawGraph, 10);
 });
