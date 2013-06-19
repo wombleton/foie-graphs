@@ -5,7 +5,7 @@ block content
     .span12
       h2 Stats for fyi.org.nz
       .btn-group(data-toggle="buttons-radio")
-        button.btn(data-year=year) All time
+        button.btn(data-year="all") All time
         - each year, i in years
           - var cls = i === 0 ? "active btn" : "btn"
           button.btn(class=cls, data-year=year)= year
