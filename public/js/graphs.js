@@ -59,7 +59,7 @@ function drawGraph() {
     d3.json(url, function(raw) {
         var data = process(raw);
 
-        document.getElementsByTagName('svg')[0].setAttribute('style', 'height: ' + (data[0].values.length * 30));
+        document.getElementsByTagName('svg')[0].setAttribute('style', 'height: ' + (data[0].values.length * 30) + 'px');
 
         nv.graphs.shift();
         nv.addGraph(function() {
