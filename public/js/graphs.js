@@ -68,6 +68,9 @@ function drawGraph() {
                 .x(function(d) { return d.label })
                 .y(function(d) { return d.value })
                 .margin({top: 30, right: 20, bottom: 50, left: 350})
+                .tooltip(function(key, x, y, e, graph) {
+                    return '<h3>' + x + '</h3><h3>' + key + '</h3><p>' + y + '</p>';
+                })
                 .tooltips(true)
                 .showControls(false);
 

@@ -5851,3 +5851,14 @@ svg .title {
 body {
   margin-top: 50px;
 }
+.nvtooltip h3 {
+  font-size: 13px;
+  padding: 2px 14px;
+}
+.nvtooltip h3:first-child {
+  font-weight: bold;
+  border-bottom: none;
+}
+.nvtooltip h3:nth-child(2) {
+  text-transform: uppercase;
+}
