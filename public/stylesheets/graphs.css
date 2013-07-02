@@ -6891,7 +6891,7 @@ body {
 #links {
   position: fixed;
   left: 660px;
-  top: 75px;
+  top: 50px;
   overflow: auto;
 }
 #links .spinner {
