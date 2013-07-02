@@ -52,7 +52,7 @@ function drawGraph() {
     var url = 'data.json',
         year = $('button.active').attr('data-year');
 
-    if (year !== 'all') {
+    if (year) {
         url += '?year=' + year;
     }
 
