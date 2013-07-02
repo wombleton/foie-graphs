@@ -6889,7 +6889,10 @@ body {
   cursor: pointer;
 }
 #links {
-  padding-top: 20px;
+  position: fixed;
+  left: 660px;
+  top: 75px;
+  overflow: auto;
 }
 #links .spinner {
   text-align: center;

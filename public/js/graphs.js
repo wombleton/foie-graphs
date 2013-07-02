@@ -84,7 +84,10 @@ function drawGraph() {
                 .transition().duration(500)
                 .call(chart);
 
-            nv.utils.windowResize(chart.update);
+            nv.utils.windowResize(function() {
+                fixLinksHeight();
+                chart.update();
+            });
 
             d3.selectAll('.nv-bar').on('click', function(e, a) {
                 $('#links').html('<div class="spinner"><i class="icon-spinner icon-spin"></i></div>');
@@ -96,10 +99,15 @@ function drawGraph() {
                 });
             });
 
+            fixLinksHeight();
+
             return chart;
         });
     });
+}
 
+function fixLinksHeight() {
+    $('#links').height($(window).height() - 70);
 }
 
 $(document).ready(drawGraph);
