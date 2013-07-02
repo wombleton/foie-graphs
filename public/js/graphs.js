@@ -87,6 +87,7 @@ function drawGraph() {
             nv.utils.windowResize(chart.update);
 
             d3.selectAll('.nv-bar').on('click', function(e, a) {
+                $('#links').html('<div class="spinner"><i class="icon-spinner icon-spin"></i></div>');
                 $.ajax({
                     success: function(res) {
                         $('#links').html(res);

@@ -36,8 +36,8 @@ exports.links = function(req, res) {
 
     db.view('crawler/list', {
         include_docs: true,
-        startkey: [year, label, status],
-        endkey: [year, label, status]
+        startkey: [year, label, status, ''],
+        endkey: [year, label, status, {}]
     }, function(err, results) {
         if (err) {
             res.send(500, "Can't access database.");
