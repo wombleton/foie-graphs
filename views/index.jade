@@ -2,10 +2,11 @@ extends layout
 
 block content
   .row
-    .span12
+    .span8
       .btn-group(data-toggle="buttons-radio")
         button.btn(data-year="all") All time
         - each year, i in years
           - var cls = i === 0 ? "active btn" : "btn"
           button.btn(class=cls, data-year=year)= year
       svg
+    #links.span4

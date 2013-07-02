@@ -1,0 +1,9 @@
+table.table.table-striped
+  thead
+    tr
+      th #{status} requests for #{label} in #{year}
+  tbody
+    - each link in links
+      tr
+        td
+          a(href="#{site}/request/#{link.url_title}", target="_blank")=link.title

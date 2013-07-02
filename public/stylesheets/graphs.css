@@ -5862,3 +5862,6 @@ body {
 .nvtooltip h3:nth-child(2) {
   text-transform: uppercase;
 }
+.nv-bar {
+  cursor: pointer;
+}
