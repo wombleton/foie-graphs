@@ -85,29 +85,37 @@ function drawGraph() {
                 .call(chart);
 
             nv.utils.windowResize(function() {
-                fixLinksHeight();
+                fixLinksPos();
                 chart.update();
+                addListener(d3, year, data);
             });
 
-            d3.selectAll('.nv-bar').on('click', function(e, a) {
-                $('#links').html('<div class="spinner"><i class="icon-spinner icon-spin"></i></div>');
-                $.ajax({
-                    success: function(res) {
-                        $('#links').html(res);
-                    },
-                    url: '/links/' + year + '/' + encodeURIComponent(data[e.series].key) + '/' + encodeURIComponent(e.label)
-                });
-            });
+            addListener(d3, year, data);
 
-            fixLinksHeight();
+            fixLinksPos();
 
             return chart;
         });
     });
 }
 
-function fixLinksHeight() {
-    $('#links').height($(window).height() - 70);
+function addListener(d3, year, data) {
+    d3.selectAll('.nv-bar').on('click', function(e, a) {
+        $('#links').html('<div class="spinner"><i class="icon-spinner icon-spin"></i></div>');
+        $.ajax({
+            success: function(res) {
+                $('#links').html(res);
+            },
+            url: '/links/' + year + '/' + encodeURIComponent(data[e.series].key) + '/' + encodeURIComponent(e.label)
+        });
+    });
+}
+
+
+function fixLinksPos() {
+    $svg = $('svg');
+
+    $('#links').height($(window).height() - 70).css('left', $svg.position().left + $svg.width());
 }
 
 $(document).ready(drawGraph);
