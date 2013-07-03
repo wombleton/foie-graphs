@@ -32,12 +32,21 @@ exports.index = function(req, res) {
 exports.links = function(req, res) {
     var year = Number(req.params.year),
         label = req.params.label,
-        status = req.params.status;
+        status = req.params.status,
+        startkey = [label, status, ''],
+        endkey = [label, status, {}];
 
+    if (year) {
+        startkey.unshift(year);
+        endkey.unshift(year);
+    } else {
+        startkey.unshift('all');
+        endkey.unshift('all');
+    }
     db.view('crawler/list', {
         include_docs: true,
-        startkey: [year, label, status, ''],
-        endkey: [year, label, status, {}]
+        startkey: startkey,
+        endkey: endkey
     }, function(err, results) {
         if (err) {
             res.send(500, "Can't access database.");

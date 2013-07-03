@@ -101,12 +101,19 @@ function drawGraph() {
 
 function addListener(d3, year, data) {
     d3.selectAll('.nv-bar').on('click', function(e, a) {
+        var url;
+
+        if (year) {
+            url = '/links/' + year + '/' + encodeURIComponent(data[e.series].key) + '/' + encodeURIComponent(e.label);
+        } else {
+            url = '/links/' + encodeURIComponent(data[e.series].key) + '/' + encodeURIComponent(e.label);
+        }
         $('#links').html('<div class="spinner"><i class="icon-spinner icon-spin"></i></div>');
         $.ajax({
             success: function(res) {
                 $('#links').html(res);
             },
-            url: '/links/' + year + '/' + encodeURIComponent(data[e.series].key) + '/' + encodeURIComponent(e.label)
+            url: url
         });
     });
 }
