@@ -1,38 +1,27 @@
+var Search = require('./lib/search'),
+    Scraper = require('./lib/scraper'),
+    Store = require('./lib/store');
 
-/**
- * Module dependencies.
-*/
+search = new Search(process.env.ALAVETELI);
+scraper = new Scraper(process.env.ALAVETELI);
 
-var express = require('express'),
-    routes = require('./routes'),
-    http = require('http'),
-    path = require('path'),
-    app = express();
+search.on('request', function(uri) {
+    scraper.push(uri);
+});
 
-require('./lib/crawler');
+scraper.on('data', function(data) {
+    console.log(data);
+});
 
-// all environments
-app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(app.router);
-app.use(require('less-middleware')({ src: __dirname + '/public' }));
-app.use(express.static(path.join(__dirname, 'public')));
+scraper.on('drain', function() {
+    var now = moment(),
+        restart = moment().add(7, days);
 
-// development only
-if ('development' == app.get('env')) {
-    app.use(express.errorHandler());
+    _.delay(crawl, restart.valueOf() - now.valueOf());
+});
+
+function crawl() {
+    search.start(30);
 }
 
-app.get('/', routes.index);
-app.get('/data.json', routes.data);
-app.get('/links/:year/:status/:label', routes.links);
-app.get('/links/:status/:label', routes.links);
-
-http.createServer(app).listen(app.get('port'), function(){
-    console.log('Express server listening on port ' + app.get('port'));
-});
+crawl();
