@@ -4,18 +4,21 @@ var Search = require('./lib/search'),
 
 search = new Search(process.env.ALAVETELI);
 scraper = new Scraper(process.env.ALAVETELI);
+store = new Store(process.env.USER, process.env.REPO, process.env.TOKEN);
 
 search.on('request', function(uri) {
     scraper.push(uri);
 });
 
 scraper.on('data', function(data) {
-    console.log(data);
+    store.save(data);
 });
 
 scraper.on('drain', function() {
     var now = moment(),
         restart = moment().add(7, days);
+
+    store.flush();
 
     _.delay(crawl, restart.valueOf() - now.valueOf());
 });
