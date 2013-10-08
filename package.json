@@ -10,6 +10,9 @@
     "async": "~0.2.9",
     "moment": "~2.0.0",
     "request": "~2.21.0",
-    "underscore": "~1.4.4"
+    "underscore": "~1.4.4",
+    "github-api": "~0.7.0",
+    "shagit": "0.0.1",
+    "dirty": "~0.9.7"
   }
 }
