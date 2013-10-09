@@ -3,7 +3,7 @@ html
   head
     link(rel="stylesheet" type="text/css" class="ui" href="http://cdn.jsdelivr.net/foundation/4.3.2/css/foundation.min.css")
     style.
-      h1, h2, h3 {
+      h1, h2, h3, h4 {
         text-align: center;
         max-width: 100%;
       }
@@ -13,13 +13,13 @@ html
       .overview li {
         padding: 20px;
       }
-      .successful h2, .successful h3 {
+      .successful h2, .successful h3, .successful h4 {
         color: #468847;
       }
-      .refused h2, .refused h3 {
+      .refused h2, .refused h3, .refused h4 {
         color: #b94a48;
       }
-      .not-held h2, .not-held h3 {
+      .not-held h2, .not-held h3, .not-held h4 {
         color: #999999;
       }
       .masthead {
@@ -61,6 +61,7 @@ html
               li
                 a(href="#{site}/body/#{item.url}/successful")
                   h2 #{Math.floor((item.rate / item.count) * 1000) / 10}%
+                  h4.subheader #{item.rate} out of #{item.count}
                   h3.subheader=item.name
       .row
         .large-12.columns
@@ -70,6 +71,7 @@ html
               li
                 a(href="#{site}/body/#{item.url}/unsuccessful")
                   h2 #{Math.floor((item.rate / item.count) * 1000) / 10}%
+                  h4.subheader #{item.rate} out of #{item.count}
                   h3.subheader=item.name
       .row
         .large-12.columns
@@ -79,6 +81,7 @@ html
               li
                 a(href="#{site}/body/#{item.url}/unsuccessful?query=not held")
                   h2 #{Math.floor((item.rate / item.count) * 1000) / 10}%
+                  h4.subheader #{item.rate} out of #{item.count}
                   h3.subheader=item.name
       .row
         .large-12.columns
