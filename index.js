@@ -1,19 +1,22 @@
 var Search = require('./lib/search'),
     Scraper = require('./lib/scraper'),
     Store = require('./lib/store'),
+    Pager = require('./lib/pager'),
     search,
     scraper,
-    store;
+    store,
+    count = 0;
 
 search = new Search(process.env.ALAVETELI);
 scraper = new Scraper(process.env.ALAVETELI);
-store = new Store();
+store = new Store(process.env.ALAVETELI);
 
 search.on('request', function(uri) {
     scraper.push(uri);
 });
 
 scraper.on('data', function(data) {
+    console.log("Saving request #%s from %s", ++count, data.url_title);
     store.save(data);
 });
 

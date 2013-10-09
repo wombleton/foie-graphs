@@ -1,0 +1,91 @@
+doctype 5
+html
+  head
+    link(rel="stylesheet" type="text/css" class="ui" href="http://cdn.jsdelivr.net/foundation/4.3.2/css/foundation.min.css")
+    style.
+      h1, h2, h3 {
+        text-align: center;
+        max-width: 100%;
+      }
+      .overview {
+        background-color: #eee;
+      }
+      .overview li {
+        padding: 20px;
+      }
+      .successful h2, .successful h3 {
+        color: #468847;
+      }
+      .refused h2, .refused h3 {
+        color: #b94a48;
+      }
+      .not-held h2, .not-held h3 {
+        color: #999999;
+      }
+      .masthead {
+        background: #054a5d;
+        padding: 50px 10px;
+      }
+      .masthead h1, .masthead h2 {
+        color: white;
+      }
+      section {
+        padding: 20px 0;
+      }
+  body
+    section.masthead
+      .row
+        h1 Official Information Requests
+        h2 
+          | for the last 12 months on 
+          a(href="#{site}") #{name}
+    section
+      .row.overview
+        .large-12.columns
+          h1 #{total} Requests
+          ul.large-block-grid-3.small-block-grid-1
+            li.successful
+              h2=successCount
+              h3.subheader Successful
+            li.refused
+              h2=refusedCount
+              h3.subheader Refused
+            li.not-held
+              h2=notHeldCount
+              h3.subheader Not Held
+      .row
+        .large-12.columns
+          h1 Most Successful Requests
+          ul.large-block-grid-3.small-block-grid-1.successful 
+            - each item in successful
+              li
+                a(href="#{site}/body/#{item.url}/successful")
+                  h2 #{Math.floor((item.rate / item.count) * 1000) / 10}%
+                  h3.subheader=item.name
+      .row
+        .large-12.columns
+          h1 Most Refused Requests
+          ul.large-block-grid-3.small-block-grid-1.refused 
+            - each item in refused
+              li
+                a(href="#{site}/body/#{item.url}/unsuccessful")
+                  h2 #{Math.floor((item.rate / item.count) * 1000) / 10}%
+                  h3.subheader=item.name
+      .row
+        .large-12.columns
+          h1 Most Not Held Requests
+          ul.large-block-grid-3.small-block-grid-1.not-held 
+            - each item in notHeld
+              li
+                a(href="#{site}/body/#{item.url}/unsuccessful?query=not held")
+                  h2 #{Math.floor((item.rate / item.count) * 1000) / 10}%
+                  h3.subheader=item.name
+      .row
+        .large-12.columns
+          h1 Most Requests
+          ul.large-block-grid-3.small-block-grid-1 
+            - each item in requests
+              li
+                a(href="#{site}/body/#{item.url}")
+                  h2=item.count
+                  h3.subheader=item.name
