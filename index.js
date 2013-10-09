@@ -16,7 +16,7 @@ search.on('request', function(uri) {
 });
 
 scraper.on('data', function(data) {
-    console.log("Saving request #%s from %s", ++count, data.url_title);
+    console.log("Saving request #%s from %s with the date %s", ++count, data.url_title, data.created_at);
     store.save(data);
 });
 
