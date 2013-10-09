@@ -13,7 +13,6 @@
     "underscore": "~1.4.4",
     "github-api": "~0.7.0",
     "shagit": "0.0.1",
-    "dirty": "~0.9.7",
     "jade": "~0.35.0"
   }
 }
