@@ -21,7 +21,6 @@ search.on('request', function(uri, original) {
 
 scraper.on('data', function(data) {
     if (moment(data.created_at) > limit) {
-        //console.log("Saving request #%s from %s with the date %s", ++count, data.url_title, data.created_at);
         store.save(data);
     }
 });
