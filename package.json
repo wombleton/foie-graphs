@@ -14,6 +14,7 @@
     "github-api": "~0.7.0",
     "shagit": "0.0.1",
     "jade": "~0.35.0",
-    "workwork": "^0.1.0"
+    "workwork": "^0.1.0",
+    "median": "0.0.2"
   }
 }
