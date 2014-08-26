@@ -33,18 +33,26 @@ scraper.on('data', function(data) {
 });
 
 scraper.on('finish', function() {
-    var raw = store.getRaw();
+    var raw = JSON.stringify(store.getRaw());
 
-    fs.write('raw.json', raw);
+    fs.writeFile('raw.json', raw);
+    /*
     new Repo({
         user: process.env.USER,
         repoName: process.env.REPO,
         token: process.env.TOKEN
     }).update({
-        branch: 'develop',
+        branch: 'master',
         path: 'raw.json',
         s: raw
+    }, function(err) {
+        if (err) {
+            console.log("Error committing file: %s", JSON.stringify(err));
+        } else {
+            console.log("Successfully updated raw.json");
+        }
     });
+    */
 });
 
 function crawl() {
