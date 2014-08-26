@@ -1,0 +1,127 @@
+<section class="masthead">
+  <div class="row">
+    <h1>Official Information Requests</h1>
+    <h2> 
+      from {{from}} to {{to}} 
+      <br/>
+      on <a href="https://fyi.org.nz">fyi.org.nz</a>
+    </h2>
+  </div>
+</section>
+<section>
+  <div class="row overview">
+    <div class="large-12 columns">
+      <h1>{{total}} Requests</h1>
+      <ul class="large-block-grid-3 small-block-grid-1">
+        <li class="successful">
+          <h2>{{successCount}}</h2>
+          <h3 class="subheader">Successful</h3>
+        </li>
+        <li class="refused">
+        <h2>{{refusedCount}}</h2>
+          <h3 class="subheader">Refused</h3>
+        </li>
+        <li class="not-held">
+          <h2>{{notHeldCount}}</h2>
+          <h3 class="subheader">Not Held</h3>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-12 columns">
+      <h1>Most Successful Requests</h1>
+      <ul class="large-block-grid-3 small-block-grid-1 successful" >
+        <li ng-repeat="item in successful">
+          <a href="{{site}}/body/{{item.url}}">
+            <h2>{{100 * item.rate / item.count | number:0}}%</h2>
+            <h4 class="subheader">{{item.rate}} out of {{item.count}}</h4>
+            <h3 class="subheader">{{item.name}}</h3>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-12 columns">
+      <h1>Most Refused Requests</h1>
+      <ul class="large-block-grid-3 small-block-grid-1 refused">
+        <li ng-repeat="item in refused">
+          <a href="{{site}}/body/{{item.url}}">
+            <h2>{{100 * item.rate / item.count | number:0}}%</h2>
+            <h4 class="subheader">{{item.rate}} out of {{item.count}}</h4>
+            <h3 class="subheader">{{item.name}}</h3>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-12 columns">
+      <h1>Most Not Held Requests</h1>
+      <ul class="large-block-grid-3 small-block-grid-1 not-held">
+        <li ng-repeat="item in notHeld">
+          <a href="{{site}}/body/{{item.url}}">
+            <h2>{{100 * item.rate / item.count | number:0}}%</h2>
+            <h4 class="subheader">{{item.rate}} out of {{item.count}}</h4>
+            <h3 class="subheader">{{item.name}}</h3>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-12 columns">
+      <h1>Most Requests</h1>
+      <ul class="large-block-grid-3 small-block-grid-1">
+        <li ng-repeat="item in popular">
+          <a href="{{site}}/body/{{item.url}}">
+            <h2>{{item.count}}</h2>
+            <h3 class="subheader">{{item.name}}</h3>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-12 columns">
+      <h1>Detail</h1>
+      <table>
+        <thead>
+          <tr>
+            <th rowspan="2" width="33%">Body</th>
+            <th colspan="8">Working days to answer</th>
+            <th colspan="2">Unanswered</th>
+          </tr>
+          <tr>
+            <th>1-5</th>
+            <th>6-10</th>
+            <th>11-15</th>
+            <th>16-20</th>
+            <th>21-40</th>
+            <th>41-60</th>
+            <th>61+</th>
+            <th>Median</th>
+            <th>Count</th>
+            <th>Oldest</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="request in requests">
+            <td><a href="{{request.body_url}}">{{request.body}}</a></td>
+            <td>{{request.bands[0]}}</td>
+            <td>{{request.bands[1]}}</td>
+            <td>{{request.bands[2]}}</td>
+            <td>{{request.bands[3]}}</td>
+            <td>{{request.bands[4]}}</td>
+            <td>{{request.bands[5]}}</td>
+            <td>{{request.bands[6]}}</td>
+            <td><b>{{request.median}}</b></td>
+            <td><span ng-show="request.unanswered">{{request.unanswered}}</span></td>
+            <td><ng-pluralize count="request.oldest" when="{ '0': '', '1': '1 day', 'other': '{} days' }"></ng-pluralize></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
